@@ -1,8 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaRegDotCircle } from "react-icons/fa";
 import { BsCircle } from "react-icons/bs";
 import "./personality.css";
-function Personality({ title, isActive }) {
+function Personality({
+  id,
+  message,
+  personalityType,
+  title,
+  isActive,
+  updateExpression,
+}) {
+  const [textMessage, setTextMessage] = useState(message);
+  const [type, setType] = useState(personalityType);
+  // console.log("check", type);
+  const makeChanges = () => {
+    updateExpression(textMessage, id, type);
+  };
+
   return (
     <>
       <div
@@ -32,6 +46,9 @@ function Personality({ title, isActive }) {
           <div className="text-area-wrapper">
             <label>Text</label>
             <textarea
+              value={textMessage}
+              onChange={(e) => setTextMessage(e.target.value)}
+              onBlur={makeChanges}
               disabled={!isActive}
               placeholder="Write Something"
               className="text-area"
@@ -43,9 +60,14 @@ function Personality({ title, isActive }) {
               <option>Forward step</option>
             </select>
           ) : (
-            <select disabled={!isActive}>
-              <option>Joyful</option>
-              <option>Exited</option>
+            <select
+              onChange={(e) => setType(e.target.value)}
+              value={type}
+              disabled={!isActive}
+              onBlur={makeChanges}
+            >
+              <option value="joyful">Joyful</option>
+              <option value="excited">Excited</option>
             </select>
           )}
         </div>

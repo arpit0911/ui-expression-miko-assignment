@@ -8,21 +8,26 @@ function Expression({
   type,
   isSelected,
   selectExpression,
+  deleteExpression,
 }) {
+  const handleDelete = (id) => {
+    deleteExpression(id);
+  };
   return (
     <>
       <div
-        onClick={() => selectExpression(id)}
         className={
           isSelected ? "expression-wrapper active" : "expression-wrapper"
         }
       >
-        <h4 className="expression-title">{title}</h4>
+        <h4 onClick={() => selectExpression(id)} className="expression-title">
+          {title}
+        </h4>
         <p>{message}</p>
         <div className="expression-action-wrapper">
           <span>{type}</span>
           <div className="expression-action-wrapper">
-            <MdDelete className="delete-btn" />
+            <MdDelete onClick={() => handleDelete(id)} className="delete-btn" />
             <button className="expression-clear-btn">Clear</button>
           </div>
         </div>

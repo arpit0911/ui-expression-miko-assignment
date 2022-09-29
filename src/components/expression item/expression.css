@@ -1,6 +1,5 @@
 .expression-wrapper {
   /* border: 1px solid red; */
-  cursor: pointer;
   padding: 5px;
 
   display: flex;
@@ -13,6 +12,9 @@
   background-color: rgba(207, 225, 240, 0.5);
   color: blue;
   font-weight: bolder;
+}
+.expression-title {
+  cursor: pointer;
 }
 
 .expression-action-wrapper {
@@ -28,11 +30,13 @@
 }
 .delete-btn {
   color: rgba(255, 0, 0, 0.6);
+  cursor: pointer;
 }
 .expression-clear-btn {
   background-color: transparent;
   border: none;
   color: rgb(4, 156, 244);
+  cursor: pointer;
 }
 .expression-action-wrapper span {
   border: 1px solid black;

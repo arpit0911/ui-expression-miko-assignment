@@ -30,27 +30,55 @@ function App() {
       id: 1,
       title: "Expression 1",
       message: "hey",
-      type: "excited",
+      type: "joyful",
       isSelected: true,
+      isPersonality: true,
     },
     {
       id: 2,
       title: "Expression 2",
       message: "hey i",
-      type: "excited",
+      type: "forward step",
       isSelected: false,
+      isPersonality: false,
     },
     {
       id: 3,
       title: "Expression 3",
       message: "hey me here",
-      type: "bore",
+      type: "excited",
       isSelected: false,
+      isPersonality: true,
     },
   ]);
 
+  // *** updating the expression
+
+  const updateExpression = (message, id, type) => {
+    // console.log("updating", message);
+    setExpressions((prevState) => {
+      let newState = prevState.map((item) => {
+        if (item.id === id) {
+          return { ...item, message: message, type: type };
+        }
+        return item;
+      });
+      // console.log(newState);
+      return [...newState];
+    });
+  };
+
+  // ******* deleting expression
+  const deleteExpression = (id) => {
+    console.log("delete Expression", id);
+    setExpressions((prevState) => {
+      let newState = prevState.filter((item) => item.id != id);
+      return [...newState];
+    });
+  };
+
   const selectExpression = (id) => {
-    console.log("select expression");
+    // console.log("select expression");
     setExpressions((prevState) => {
       let temp = updatePrevState(prevState);
       let newState = temp.map((item) => {
@@ -78,9 +106,10 @@ function App() {
         {
           id: prevState.length + 1,
           title: `Expression ${prevState.length + 1}`,
-          message: "hey me here",
-          type: "bore",
+          message: "",
+          type: "",
           isSelected: true,
+          isPersonality: true,
         },
         ...newState,
       ];
@@ -101,6 +130,7 @@ function App() {
                 type={expression.type}
                 isSelected={expression.isSelected}
                 selectExpression={selectExpression}
+                deleteExpression={deleteExpression}
               />
             );
           })}
@@ -112,7 +142,22 @@ function App() {
           </div>
         </div>
         <div className="element-main-container">
-          <Personality title={"Personality"} isActive={true} />
+          {expressions.map((expression) => {
+            if (expression.isSelected) {
+              return (
+                <Personality
+                  key={expression.id}
+                  id={expression.id}
+                  message={expression.message}
+                  personalityType={expression.type}
+                  title={"Personality"}
+                  isActive={expression.isPersonality}
+                  updateExpression={updateExpression}
+                />
+              );
+            }
+          })}
+          {/* <Personality title={"Personality"} isActive={true} /> */}
           <Personality title={"Step"} isActive={false} />
         </div>
       </div>
