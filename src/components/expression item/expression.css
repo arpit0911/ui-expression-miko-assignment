@@ -1,0 +1,45 @@
+.expression-wrapper {
+  /* border: 1px solid red; */
+  cursor: pointer;
+  padding: 5px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+}
+/*** if active */
+.active {
+  background-color: rgba(207, 225, 240, 0.5);
+  color: blue;
+  font-weight: bolder;
+}
+
+.expression-action-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+}
+.expression-wrapper p {
+  color: rgb(60, 60, 60);
+  font-weight: 500;
+}
+.delete-btn {
+  color: rgba(255, 0, 0, 0.6);
+}
+.expression-clear-btn {
+  background-color: transparent;
+  border: none;
+  color: rgb(4, 156, 244);
+}
+.expression-action-wrapper span {
+  border: 1px solid black;
+  border-radius: 1rem;
+  padding: 0 0.5rem;
+  text-align: center;
+  text-transform: capitalize;
+  color: rgb(60, 60, 60);
+  font-weight: 500;
+}
