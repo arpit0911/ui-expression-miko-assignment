@@ -127,9 +127,9 @@ function App() {
     });
     let res = "";
     // console.log("output = ", payload);
-    for (const [value] of Object.entries(payload)) {
+    for (const [key, value] of Object.entries(payload)) {
       const { text, step, personality } = value;
-      // console.log(text, step, personality);
+      console.log(key);
       res += `{text: "${text}", ${
         step ? `step: "${step}", ` : `personality: "${personality}"`
       }}\n`;
@@ -227,6 +227,7 @@ function App() {
                 />
               );
             }
+            return;
           })}
         </div>
       </div>
