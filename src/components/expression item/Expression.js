@@ -1,7 +1,6 @@
 import React from "react";
 import "./expression.css";
 import { MdDelete } from "react-icons/md";
-import { clear } from "@testing-library/user-event/dist/clear";
 function Expression({
   id,
   title,

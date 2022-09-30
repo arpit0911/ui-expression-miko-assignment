@@ -70,7 +70,7 @@ function App() {
   const deleteExpression = (id) => {
     // console.log("delete Expression", id);
     setExpressions((prevState) => {
-      let newState = prevState.filter((item) => item.id != id);
+      let newState = prevState.filter((item) => item.id !== id);
       return [...newState];
     });
   };
@@ -127,7 +127,7 @@ function App() {
     });
     let res = "";
     // console.log("output = ", payload);
-    for (const [key, value] of Object.entries(payload)) {
+    for (const [value] of Object.entries(payload)) {
       const { text, step, personality } = value;
       // console.log(text, step, personality);
       res += `{text: "${text}", ${
@@ -228,8 +228,6 @@ function App() {
               );
             }
           })}
-          {/* <Personality title={"Personality"} isActive={true} /> */}
-          {/* <Personality title={"Step"} isActive={false} /> */}
         </div>
       </div>
       <div className="output-node-btn-wrapper">
