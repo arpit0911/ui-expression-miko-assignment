@@ -3,34 +3,16 @@ import { MdAddCircle } from "react-icons/md";
 import Expression from "./components/expression item/Expression";
 import Personality from "./components/personality/Personality";
 import { useState } from "react";
+import { v4 as uuid } from "uuid";
 
-// const sample = [
-//   {
-//     id: 1,
-//     title: "Expression 1",
-//     message: "hey",
-//     type: "excited",
-//   },
-//   {
-//     id: 2,
-//     title: "Expression 2",
-//     message: "hey i",
-//     type: "excited",
-//   },
-//   {
-//     id: 3,
-//     title: "Expression 3",
-//     message: "hey me here",
-//     type: "bore",
-//   },
-// ];
 function App() {
   const [expressions, setExpressions] = useState([
     {
       id: 1,
       title: "Expression 1",
       message: "hey",
-      type: "joyful",
+      personality: "joyful",
+      step: "",
       isSelected: true,
       isPersonality: true,
     },
@@ -38,7 +20,8 @@ function App() {
       id: 2,
       title: "Expression 2",
       message: "hey i",
-      type: "forward step",
+      personality: "",
+      step: "forward step",
       isSelected: false,
       isPersonality: false,
     },
@@ -46,7 +29,8 @@ function App() {
       id: 3,
       title: "Expression 3",
       message: "hey me here",
-      type: "excited",
+      personality: "excited",
+      step: "",
       isSelected: false,
       isPersonality: true,
     },
@@ -55,11 +39,25 @@ function App() {
   // *** updating the expression
 
   const updateExpression = (message, id, type) => {
+    // console.log("updating", type);
+    setExpressions((prevState) => {
+      let newState = prevState.map((item) => {
+        if (item.id === id) {
+          return { ...item, message: message, personality: type };
+        }
+        return item;
+      });
+      // console.log(newState);
+      return [...newState];
+    });
+  };
+
+  const updateExpressionStep = (message, id, step) => {
     // console.log("updating", message);
     setExpressions((prevState) => {
       let newState = prevState.map((item) => {
         if (item.id === id) {
-          return { ...item, message: message, type: type };
+          return { ...item, message: message, step: step };
         }
         return item;
       });
@@ -70,11 +68,73 @@ function App() {
 
   // ******* deleting expression
   const deleteExpression = (id) => {
-    console.log("delete Expression", id);
+    // console.log("delete Expression", id);
     setExpressions((prevState) => {
       let newState = prevState.filter((item) => item.id != id);
       return [...newState];
     });
+  };
+  // *********** clear selection
+
+  const clearSelection = (id) => {
+    // console.log("clear selection");
+    setExpressions((prevState) => {
+      let newState = prevState.map((item) => {
+        if (item.id === id) {
+          if (item.isPersonality) {
+            return { ...item, personality: "" };
+          } else {
+            return { ...item, step: "" };
+          }
+        }
+        return item;
+      });
+      return [...newState];
+    });
+  };
+
+  // ******** change card
+
+  const changeCard = (id) => {
+    // console.log("change card ", id);
+    setExpressions((prevState) => {
+      let newState = prevState.map((item) => {
+        if (item.id === id) {
+          return { ...item, isPersonality: !item.isPersonality };
+        }
+        return item;
+      });
+      return [...newState];
+    });
+  };
+
+  // ***********show output node
+
+  const showOutputNode = () => {
+    let payload = {};
+    expressions.map((expression, index) => {
+      if (expression.isPersonality) {
+        return (payload[index] = {
+          text: expression.message,
+          personality: expression.personality,
+        });
+      } else {
+        return (payload[index] = {
+          text: expression.message,
+          step: expression.step,
+        });
+      }
+    });
+    let res = "";
+    // console.log("output = ", payload);
+    for (const [key, value] of Object.entries(payload)) {
+      const { text, step, personality } = value;
+      // console.log(text, step, personality);
+      res += `{text: "${text}", ${
+        step ? `step: "${step}", ` : `personality: "${personality}"`
+      }}\n`;
+    }
+    alert(`{\n${res}}`);
   };
 
   const selectExpression = (id) => {
@@ -91,11 +151,16 @@ function App() {
     });
   };
   const updatePrevState = (prevState) => {
-    let temp = prevState.map((item) => {
+    let temp = prevState.map((item, index) => {
       if (item.isSelected) {
-        return { ...item, isSelected: !item.isSelected };
+        return {
+          ...item,
+          title: `Expression ${index + 1}`,
+          isSelected: !item.isSelected,
+        };
       }
-      return item;
+
+      return { ...item, title: `Expression ${index + 1}` };
     });
     return temp;
   };
@@ -104,10 +169,10 @@ function App() {
       let newState = updatePrevState(prevState);
       return [
         {
-          id: prevState.length + 1,
+          id: uuid(),
           title: `Expression ${prevState.length + 1}`,
           message: "",
-          type: "",
+          personality: "",
           isSelected: true,
           isPersonality: true,
         },
@@ -127,10 +192,13 @@ function App() {
                 id={expression.id}
                 title={expression.title}
                 message={expression.message}
-                type={expression.type}
+                type={expression.personality}
+                step={expression.step}
                 isSelected={expression.isSelected}
                 selectExpression={selectExpression}
                 deleteExpression={deleteExpression}
+                clearSelection={clearSelection}
+                isPersonality={expression.isPersonality}
               />
             );
           })}
@@ -144,25 +212,30 @@ function App() {
         <div className="element-main-container">
           {expressions.map((expression) => {
             if (expression.isSelected) {
+              // console.log("expression=", expression);
               return (
                 <Personality
                   key={expression.id}
                   id={expression.id}
                   message={expression.message}
-                  personalityType={expression.type}
-                  title={"Personality"}
+                  step={expression.step}
+                  personalityType={expression.personality}
                   isActive={expression.isPersonality}
                   updateExpression={updateExpression}
+                  changeCard={changeCard}
+                  updateExpressionStep={updateExpressionStep}
                 />
               );
             }
           })}
           {/* <Personality title={"Personality"} isActive={true} /> */}
-          <Personality title={"Step"} isActive={false} />
+          {/* <Personality title={"Step"} isActive={false} /> */}
         </div>
       </div>
       <div className="output-node-btn-wrapper">
-        <button className="output-node-btn">Save Output node</button>
+        <button onClick={showOutputNode} className="output-node-btn">
+          Save Output node
+        </button>
       </div>
     </>
   );
