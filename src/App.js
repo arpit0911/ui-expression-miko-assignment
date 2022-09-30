@@ -210,10 +210,9 @@ function App() {
           </div>
         </div>
         <div className="element-main-container">
-          {expressions.map((expression) => {
-            if (expression.isSelected) {
-              // console.log("expression=", expression);
-              return (
+          {expressions.map(
+            (expression) =>
+              expression.isSelected && (
                 <Personality
                   key={expression.id}
                   id={expression.id}
@@ -225,10 +224,8 @@ function App() {
                   changeCard={changeCard}
                   updateExpressionStep={updateExpressionStep}
                 />
-              );
-            }
-            return;
-          })}
+              )
+          )}
         </div>
       </div>
       <div className="output-node-btn-wrapper">
